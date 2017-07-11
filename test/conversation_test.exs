@@ -3,7 +3,7 @@ defmodule ConversationTest do
 
   setup do
     {:ok,conversation} = Babble.Conversation.start_link("Title")
-    {:ok,_} = Registry.start_link(:duplicate,Babble.Conversation)
+    {:ok,_} = Registry.start_link(:duplicate,Babble.Conversation.Registry)
     {:ok,conversation: conversation}
   end
 

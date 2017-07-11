@@ -10,6 +10,8 @@ defmodule Babble.Application do
 
     # Define workers and child supervisors to be supervised
     children = [
+      worker(Registry, [:duplicate,Babble.Conversation.Registry]),
+      supervisor(Babble.ConversationSup, [])
       # Starts a worker by calling: Babble.Worker.start_link(arg1, arg2, arg3)
       # worker(Babble.Worker, [arg1, arg2, arg3]),
     ]
