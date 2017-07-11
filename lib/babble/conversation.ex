@@ -46,8 +46,10 @@ defmodule Babble.Conversation do
 
   def handle_cast({:post,user,text},state) do
     Logger.debug "Babble.Conversation.handle_cast :post, Registry.lookup: #{inspect(Registry.lookup(Babble.Conversation,state.title))}"
+    [{_conv_pid,{user_name,_user_pid}}|_] = Enum.drop_while(Registry.lookup(Babble.Conversation,state.title),
+                                                            fn({_conv_pid,{_user,user_pid}}) -> user_pid != user end)
     Enum.each(Registry.lookup(Babble.Conversation,state.title),
-              fn({_pid,{_name,user_pid}}) -> Babble.User.posted(user_pid,state.title,user,text) end)
+              fn({_pid,{_name,user_pid}}) -> Babble.User.posted(user_pid,state.title,user_name,text) end)
     {:noreply,%{state | posts: [text|state.posts]}}
   end
 end
